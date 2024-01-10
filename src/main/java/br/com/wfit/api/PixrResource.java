@@ -1,5 +1,6 @@
 package br.com.wfit.api;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import br.com.wfit.model.Chave;
@@ -8,8 +9,10 @@ import br.com.wfit.service.DictService;
 import br.com.wfit.service.PixService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,5 +39,14 @@ public class PixrResource {
         }
 
         return null;
+    }
+
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("image/png")
+    @Path("/qrcode/{uuid}")
+    public Response qrCode(@PathParam("uuid") final String uuid) throws IOException{
+        return Response.ok(pixService.gerarQrCode(uuid)).build();
     }
 }
