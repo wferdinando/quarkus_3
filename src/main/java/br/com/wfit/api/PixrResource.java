@@ -31,16 +31,15 @@ public class PixrResource {
 
     @Inject
     PixService pixService;
-  
 
     @Operation(description = "API para criar uma linha digitável.")
     @APIResponseSchema(LinhaDigitavel.class)
     @APIResponses(value = {
-        @APIResponse(responseCode = "200", description = "OK."),
-        @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
-        @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
-        @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
-        @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
+            @APIResponse(responseCode = "200", description = "OK."),
+            @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
+            @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
+            @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
+            @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
 
     })
 
@@ -59,24 +58,22 @@ public class PixrResource {
         return null;
     }
 
-
     @Operation(description = "API para buscar um QRCode a partir de um UUID específico.")
     @APIResponseSchema(Response.class)
     @APIResponses(value = {
-        @APIResponse(responseCode = "200", description = "OK."),
-        @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
-        @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
-        @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
-        @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
+            @APIResponse(responseCode = "200", description = "OK."),
+            @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
+            @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
+            @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
+            @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
 
     })
-
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces("image/png")
     @Path("/qrcode/{uuid}")
-    public Response qrCode(@PathParam("uuid") final String uuid) throws IOException{
+    public Response qrCode(@PathParam("uuid") final String uuid) throws IOException {
         return Response.ok(pixService.gerarQrCode(uuid)).build();
     }
 }
