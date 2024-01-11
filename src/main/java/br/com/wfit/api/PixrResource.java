@@ -76,4 +76,5 @@ public class PixrResource {
     public Response qrCode(@PathParam("uuid") final String uuid) throws IOException {
         return Response.ok(pixService.gerarQrCode(uuid)).build();
     }
+    
 }
