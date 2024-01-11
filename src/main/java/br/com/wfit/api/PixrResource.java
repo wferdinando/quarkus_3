@@ -3,7 +3,13 @@ package br.com.wfit.api;
 import java.io.IOException;
 import java.util.Objects;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponseSchema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 import br.com.wfit.model.Chave;
+import br.com.wfit.model.LinhaDigitavel;
 import br.com.wfit.model.Pix;
 import br.com.wfit.service.DictService;
 import br.com.wfit.service.PixService;
@@ -25,6 +31,18 @@ public class PixrResource {
 
     @Inject
     PixService pixService;
+  
+
+    @Operation(description = "API para criar uma linha digitável.")
+    @APIResponseSchema(LinhaDigitavel.class)
+    @APIResponses(value = {
+        @APIResponse(responseCode = "200", description = "OK."),
+        @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
+        @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
+        @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
+        @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
+
+    })
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -40,6 +58,18 @@ public class PixrResource {
 
         return null;
     }
+
+
+    @Operation(description = "API para buscar um QRCode a partir de um UUID específico.")
+    @APIResponseSchema(Response.class)
+    @APIResponses(value = {
+        @APIResponse(responseCode = "200", description = "OK."),
+        @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
+        @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
+        @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
+        @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
+
+    })
 
 
     @GET
