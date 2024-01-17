@@ -12,7 +12,6 @@ import br.com.wfit.model.Transaction;
 import br.com.wfit.repository.TransactionPanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class TransacationDomain {
