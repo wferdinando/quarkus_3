@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,8 +30,6 @@ public class PixService {
 
     @Inject
     LinhaDigitavelCache linhaDigitavelCache;
-
-
 
     public static final String QRCODE_PATH = "/tmp/imgQrCode";
 
@@ -67,14 +67,17 @@ public class PixService {
     public Optional<Transaction> aprovarTransacao(final String uuid) {
         return transactionDomain.aprovarTransacao(uuid);
     }
-    
+
     private void processarPix() {
 
+    }
+
+    public List<Transaction> buscarTransacoes(final Date dataInicio, final Date dataFim) {
+        return transactionDomain.buscarTransacoes(dataInicio, dataFim);
     }
 
     public Optional<Transaction> reprovarTransacao(final String uuid) {
         return transactionDomain.reprovarTransacao(uuid);
     }
-
 
 }

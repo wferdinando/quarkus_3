@@ -21,6 +21,7 @@ import br.com.wfit.model.LinhaDigitavel;
 import br.com.wfit.model.StatusPix;
 import br.com.wfit.model.Transaction;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import jakarta.inject.Inject;
 
 @ApplicationScoped

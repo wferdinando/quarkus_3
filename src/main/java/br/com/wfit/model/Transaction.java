@@ -6,7 +6,11 @@ import java.util.Objects;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-public class Transaction {
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import io.quarkus.mongodb.panache.common.MongoEntity;
+
+@MongoEntity(collection = "transacao_pix")
+public class Transaction extends PanacheMongoEntity {
 
     @Schema(description = "Identificador único da transação")
     private String id;

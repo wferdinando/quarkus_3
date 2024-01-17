@@ -1,9 +1,13 @@
 package br.com.wfit.api;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.ParameterIn;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponseSchema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
@@ -16,12 +20,14 @@ import br.com.wfit.service.DictService;
 import br.com.wfit.service.PixService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -33,6 +39,8 @@ public class PixrResource {
 
     @Inject
     PixService pixService;
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Operation(description = "API para criar uma linha digitável.")
     @APIResponseSchema(LinhaDigitavel.class)
@@ -88,7 +96,7 @@ public class PixrResource {
             @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
 
     })
-    @PATCH
+    @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{uuid}/reprovar")
@@ -114,6 +122,29 @@ public class PixrResource {
         return Response.ok(pixService.findById(uuid)).build();
     }
 
+    @Operation(description = "API responsável por buscar pagamentos PIX")
+    @APIResponseSchema(Transaction.class)
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "OK."),
+            @APIResponse(responseCode = "201", description = "Retorno OK com a transação criada."),
+            @APIResponse(responseCode = "401", description = "Erro de autenticação da API."),
+            @APIResponse(responseCode = "403", description = "Erro de autorização da API."),
+            @APIResponse(responseCode = "404", description = "Recurso não encontrado."),
+
+    })
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/transacoes")
+    @Parameter(name = "dataInicio", in = ParameterIn.QUERY, description = "Data de Início no formato yyyy-MM-dd")
+    @Parameter(name = "dataFim", in = ParameterIn.QUERY, description = "Data Final no formato yyyy-MM-dd")
+    public Response buscarTransacoes(@QueryParam(value = "dataInicio") final String dataInicio,
+            @QueryParam(value = "dataFim") final String dataFim) throws ParseException {
+
+        return Response.ok(pixService.buscarTransacoes(DATE_FORMAT.parse(dataInicio), DATE_FORMAT.parse(dataFim)))
+                .build();
+    }
+
     @Operation(description = "API para buscar um QRCode a partir de um UUID específico.")
     @APIResponseSchema(Response.class)
     @APIResponses(value = {
@@ -127,7 +158,7 @@ public class PixrResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces("image/png")
-    @Path("/qrcode/{uuid}")
+    @Path("/{uuid}/qrcode")
     public Response qrCode(@PathParam("uuid") final String uuid) throws IOException {
         return Response.ok(pixService.gerarQrCode(uuid)).build();
     }
