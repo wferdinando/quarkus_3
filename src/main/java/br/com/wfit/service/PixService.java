@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import br.com.wfit.config.LinhaDigitavelCache;
 import br.com.wfit.domain.TransacationDomain;
 import br.com.wfit.model.Chave;
@@ -20,7 +22,6 @@ import br.com.wfit.model.qrcode.QrCode;
 import br.com.wfit.repository.S3ImageClientRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @ApplicationScoped
 public class PixService {
@@ -33,6 +34,9 @@ public class PixService {
 
     @Inject
     S3ImageClientRepository s3ImageClientRepository;
+
+    @ConfigProperty(name = "quarkus.s3.enabled")
+    Boolean s3Enabled;
 
     public static final String QRCODE_PATH = "/tmp/imgQrCode";
 
@@ -55,8 +59,9 @@ public class PixService {
 
     }
 
-    private PutObjectResponse salvarImagemS3(String uuid, String imagePath) {
-        return s3ImageClientRepository.putObject(Paths.get(imagePath), uuid);
+    private void salvarImagemS3(String uuid, String imagePath) {
+        if (s3Enabled)
+            s3ImageClientRepository.putObject(Paths.get(imagePath), uuid);
     }
 
     private void salvarLinhaDigitavel(Chave chave, BigDecimal valor, LinhaDigitavel linhaDigitavel) {

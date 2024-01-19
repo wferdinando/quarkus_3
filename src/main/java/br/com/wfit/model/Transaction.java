@@ -105,4 +105,11 @@ public class Transaction extends PanacheMongoEntity {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "Transaction [id=" + id + ", status=" + status + "]";
+    }
+
+    
+
 }
