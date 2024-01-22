@@ -18,6 +18,7 @@ import br.com.wfit.model.Pix;
 import br.com.wfit.model.Transaction;
 import br.com.wfit.service.DictService;
 import br.com.wfit.service.PixService;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -32,6 +33,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/v1/pix")
+@Authenticated
 public class PixrResource {
 
     @Inject
